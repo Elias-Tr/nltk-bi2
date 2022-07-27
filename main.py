@@ -11,6 +11,7 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 #nltk.download('wordnet')
 #nltk.download('omw-1.4')
 #nltk.download('vader_lexicon')
+#nltk.download('punkt')
 
 def preprocessing():
 
