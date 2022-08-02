@@ -22,9 +22,8 @@ from itertools import islice
 #nltk.download("words")
 from numpy import take
 
-
+#opens the file and tokenizes it by words
 def preprocessing():
-
 
     #open text file you want to analyze
     f = open('allfinance.txt', 'r', encoding='utf8')
@@ -36,21 +35,25 @@ def preprocessing():
 
     return text
 
+#does all of the cleaning (punctuation and stopwords)
 def get_cleared_text(text):
     cleared = filter_punctuation(text)
     cleared = filter_stopwords(cleared)
     return cleared
 
+#tags Parts of Speech
 def pos_tagger(cleared_text):
     result  = nltk.pos_tag(cleared_text)
     return result
 
+#capitalizes each word
 def capitalize(cleared_text):
     cleared = []
     for word in cleared_text:
         cleared.append(word.capitalize())
     return cleared
 
+#attempts to extract Named Entities from a cleared list
 def extract_ne(cleared_list):
     tags = nltk.pos_tag(cleared_list)
     tree = nltk.ne_chunk(tags,binary=True)
@@ -60,6 +63,9 @@ def extract_ne(cleared_list):
         if hasattr(t, "label") and t.label() == "NE"
     )
 
+#plots via the nltk dispersion plotter, then saves it as a .png
+#matplotlib needs to show graphs once in order to be able to save it
+#which is why this method shows it, and then auto closes it after a second
 def dispersion_plot_vanilla(nltk_text):
     words = ["good", "bad", "buy", "sell"]
     plt.ion()
@@ -72,6 +78,8 @@ def dispersion_plot_vanilla(nltk_text):
 
 
 
+#this method doesnt use the nltk dispersion plotter
+#and does some it itself
 def dispersion_plotting(nltk_text):
     #words to filter for
     words = ["good", "bad", "buy", "sell"]
@@ -100,14 +108,12 @@ def dispersion_plotting(nltk_text):
     plt.show()
 
 
-
-
-
-
+#filters out anything not alphabetical
 def filter_punctuation(nltk_text):
     text = [word.lower() for word in nltk_text if word.isalpha()]
     return text
 
+#filters english stopwords
 def filter_stopwords(list_to_be_cleared):
     stop_words = set(stopwords.words("english"))
 
@@ -121,7 +127,8 @@ def filter_stopwords(list_to_be_cleared):
     return filtered_list
 
 
-
+#somewhat deprecated
+#plots a frequency distribution within nltk
 def frequency_dist(cleared_list):
     frequencydist = FreqDist(cleared_list)
     print(type(frequencydist))
@@ -145,7 +152,7 @@ def frequency_dist_dict(cleared_list):
     return final_dict
 
 
-
+#displays collocations
 def collocations(cleared_list):
 
     lemmatizer = WordNetLemmatizer()
@@ -154,7 +161,7 @@ def collocations(cleared_list):
     new_text.collocations()
 
 
-
+#calculates overall sentiment and prints the positive, negative and neutral score
 def sentiment_anaylsis(cleaned_list):
     sia = SentimentIntensityAnalyzer()
     number = 0
@@ -183,6 +190,10 @@ if __name__ == '__main__':
 
     cleared = get_cleared_text(text)
     frequency_dist_dict(cleared)
+
+
+
+
     #dispersion_plot(text)
     #collocations(cleared)
     # print(type(cleared))
