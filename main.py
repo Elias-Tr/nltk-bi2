@@ -10,7 +10,8 @@ from nltk import FreqDist, WordNetLemmatizer
 from nltk.draw import dispersion_plot
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.sentiment import SentimentIntensityAnalyzer
-from itertools import islice
+from spellchecker import SpellChecker
+#gets installed with pyspellchecker
 
 # Press Umschalt+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
@@ -20,13 +21,13 @@ from itertools import islice
 #nltk.download('averaged_perceptron_tagger')
 #nltk.download("maxent_ne_chunker")
 #nltk.download("words")
-from numpy import take
+
 
 #opens the file and tokenizes it by words
 def preprocessing():
 
     #open text file you want to analyze
-    f = open('allfinance.txt', 'r', encoding='utf8')
+    f = open('teslatext.txt', 'r', encoding='utf8')
     raw = f.read()
 
     #tokenize by words and make into nltk text
@@ -37,14 +38,46 @@ def preprocessing():
 
 #does all of the cleaning (punctuation and stopwords)
 def get_cleared_text(text):
-    cleared = filter_punctuation(text)
+    cleared = lower_case(text)
+
+    cleared = filter_punctuation(cleared)
     cleared = filter_stopwords(cleared)
+    #cleared = spellchecker(cleared)
+    print(type(cleared))
+
+    #
+    # f = open('wallstreetbetsentiment.txt', 'a', encoding='utf8')
+    # f.write("\n")
+    # for word in cleared:
+    #     f.write(word + ' ')
+    # f.close()
+
+
+
     return cleared
 
 #tags Parts of Speech
 def pos_tagger(cleared_text):
     result  = nltk.pos_tag(cleared_text)
     return result
+
+def lower_case(cleared_text):
+    cleared = []
+    for word in cleared_text:
+        cleared.append(word.lower())
+    return cleared
+
+#should do spellchecking but actually makes it worse
+def spellchecker(cleared_text):
+    result = []
+    spell = SpellChecker()
+    for word in text:
+        correct_word = spell.correction(word)
+        result.append(correct_word)
+
+    return result
+
+
 
 #capitalizes each word
 def capitalize(cleared_text):
@@ -189,7 +222,8 @@ if __name__ == '__main__':
     dispersion_plot_vanilla(text)
 
     cleared = get_cleared_text(text)
-    frequency_dist_dict(cleared)
+    print("test")
+    #frequency_dist_dict(cleared)
 
 
 
