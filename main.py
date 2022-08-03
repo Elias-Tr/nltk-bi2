@@ -6,11 +6,14 @@ import nltk
 from matplotlib import pyplot as plt, ticker
 from nltk.corpus import stopwords
 import matplotlib
-from nltk import FreqDist, WordNetLemmatizer
+from nltk import FreqDist, WordNetLemmatizer, ConditionalFreqDist
 from nltk.draw import dispersion_plot
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.sentiment import SentimentIntensityAnalyzer
 from spellchecker import SpellChecker
+from nltk import WhitespaceTokenizer
+
+
 #gets installed with pyspellchecker
 
 # Press Umschalt+F10 to execute it or replace it with your code.
@@ -51,9 +54,6 @@ def get_cleared_text(text):
     # for word in cleared:
     #     f.write(word + ' ')
     # f.close()
-
-
-
     return cleared
 
 #tags Parts of Speech
@@ -140,6 +140,23 @@ def dispersion_plotting(nltk_text):
 
     plt.show()
 
+def condition_prediction(cleared_txt):
+
+    cfdist= ConditionalFreqDist()
+
+    #filling of the conditional frequency
+    for word in cleared_txt:
+        condition = len(word)
+        cfdist[condition][word] += 1
+
+    #get values back from the frequency distribution
+    for condition in cfdist:
+        for word in cfdist[condition]:
+            if cfdist[condition].freq(word) > 0.02 and 10 > condition > 2:
+                print("Cond. frequency of", word, cfdist[condition].freq(word), "[condition is word length =", condition, "]")
+
+
+
 
 #filters out anything not alphabetical
 def filter_punctuation(nltk_text):
@@ -149,7 +166,7 @@ def filter_punctuation(nltk_text):
 #filters english stopwords
 def filter_stopwords(list_to_be_cleared):
     stop_words = set(stopwords.words("english"))
-
+    #stop_words = set(stopwords.words("english_reddit"))
     # empty list für das Ergebnis
     filtered_list = []
 
@@ -222,8 +239,10 @@ if __name__ == '__main__':
     dispersion_plot_vanilla(text)
 
     cleared = get_cleared_text(text)
-    print("test")
+    #frequency_dist(cleared)
+    #collocations(cleared)
     #frequency_dist_dict(cleared)
+    condition_prediction(cleared)
 
 
 
