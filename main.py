@@ -30,7 +30,7 @@ from nltk import WhitespaceTokenizer
 def preprocessing():
 
     #open text file you want to analyze
-    f = open('teslatext.txt', 'r', encoding='utf8')
+    f = open('teslafinance.txt', 'r', encoding='utf8')
     raw = f.read()
 
     #tokenize by words and make into nltk text
@@ -71,7 +71,7 @@ def lower_case(cleared_text):
 def spellchecker(cleared_text):
     result = []
     spell = SpellChecker()
-    for word in text:
+    for word in cleared_text:
         correct_word = spell.correction(word)
         result.append(correct_word)
 
@@ -105,8 +105,11 @@ def dispersion_plot_vanilla(nltk_text):
     dispersion_plot(nltk_text, words)
     plt.ioff()
     plt.savefig('dispersion_plot.png')
-    plt.show(block=False)
-    plt.pause(1)
+
+    #comment in for proper picture saving with no manual closing
+    #plt.show(block=False)
+    # plt.pause(1)
+    plt.show()
     plt.close()
 
 
@@ -180,10 +183,11 @@ def filter_stopwords(list_to_be_cleared):
 #somewhat deprecated
 #plots a frequency distribution within nltk
 def frequency_dist(cleared_list):
-    frequencydist = FreqDist(cleared_list)
-    print(type(frequencydist))
-    print(frequencydist)
-    frequencydist.plot(20, cumulative=True)
+    fd = FreqDist(cleared_list)
+    # print(type(frequencydist))
+    # print(frequencydist)
+    fd.plot(20, cumulative=True)
+    print("hello")
 
 #method that returns a dictionary representing the 20 most often used words
 def frequency_dist_dict(cleared_list):
@@ -212,37 +216,54 @@ def collocations(cleared_list):
 
 
 #calculates overall sentiment and prints the positive, negative and neutral score
-def sentiment_anaylsis(cleaned_list):
+def sentiment_analysis():
+    f = open('teslafinance.txt', 'r', encoding='utf8')
+    raw = f.read()
+
+    # tokenize by sentences and make into nltk text
+
+    tokens = nltk.sent_tokenize(raw)
+    text2 = nltk.Text(tokens)
+
+
+
     sia = SentimentIntensityAnalyzer()
     number = 0
     pos = 0
     neg = 0
     neu = 0
-    with open('wallstreetbetsentiment.txt', 'w', encoding='utf-8') as f:
-        for string in cleaned_list:
-            s = sia.polarity_scores(string)
-            pos = pos + s['pos']
-            neg = neg + s['neg']
-            neu = neu + s['neu']
-            number = number +1
 
-        pos_avg = pos / number
-        neg_avg = neg / number
-        neu_avg = neu/number
-        print("Positive = " + str(pos_avg))
-        print("Negative = " + str(neg_avg))
-        print("Neutral =  " + str(neu_avg))
+    for string in text2:
+
+        s = sia.polarity_scores(string)
+        pos = pos + s['pos']
+        neg = neg + s['neg']
+        neu = neu + s['neu']
+        number = number +1
+
+    pos_avg = pos / number
+    neg_avg = neg / number
+    neu_avg = neu/number
+    print("Positive = " + str(pos_avg))
+    print("Negative = " + str(neg_avg))
+    print("Neutral =  " + str(neu_avg))
 
 
-if __name__ == '__main__':
+def all_analysis():
     text = preprocessing()
+    cleared = get_cleared_text(text)
+
     dispersion_plot_vanilla(text)
 
-    cleared = get_cleared_text(text)
-    #frequency_dist(cleared)
-    #collocations(cleared)
-    #frequency_dist_dict(cleared)
-    condition_prediction(cleared)
+    frequency_dist(cleared)
+
+    collocations(cleared)
+
+    sentiment_analysis()
+
+if __name__ == '__main__':
+    all_analysis()
+
 
 
 
