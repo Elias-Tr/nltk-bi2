@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt, ticker
 from nltk.corpus import stopwords
 import matplotlib
 from nltk import FreqDist, WordNetLemmatizer, ConditionalFreqDist
+from nltk.corpus.reader import wordnet
 from nltk.draw import dispersion_plot
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.sentiment import SentimentIntensityAnalyzer
@@ -30,6 +31,7 @@ def get_cleared_text(text):
 
     cleared = filter_punctuation(cleared)
     cleared = filter_stopwords(cleared)
+    cleared = lemmantize_text(cleared)
     #cleared = spellchecker(cleared)
     print(type(cleared))
 
@@ -89,3 +91,31 @@ def filter_stopwords(list_to_be_cleared):
             filtered_list.append(word)
 
     return filtered_list
+
+
+#maps nltk Part of Speech tags to wordnet tags
+def get_wordnet_pos(treebank_tag):
+    if treebank_tag.startswith('J'):
+        return wordnet.ADJ
+    elif treebank_tag.startswith('V'):
+        return wordnet.VERB
+    elif treebank_tag.startswith('N'):
+        return wordnet.NOUN
+    elif treebank_tag.startswith('R'):
+        return wordnet.ADV
+    else:
+        return None
+
+
+#lemmantizes a text
+def lemmantize_text(cleared_list):
+
+    cl = []
+    tags = nltk.pos_tag(cleared_list)
+    lemmatizer = WordNetLemmatizer()
+    for word, pos in tags:
+        if(get_wordnet_pos(pos) is not None):
+            cl.append(lemmatizer.lemmatize(word, get_wordnet_pos(pos)))
+        else:
+            cl.append(word)
+    return cl

@@ -19,6 +19,7 @@ def extract_ne(cleared_list):
     )
 
 
+
 # plots via the nltk dispersion plotter, then saves it as a .png
 # matplotlib needs to show graphs once in order to be able to save it
 # which is why this method shows it, and then auto closes it after a second
@@ -87,6 +88,14 @@ def frequency_dist(cleared_list):
     fd = FreqDist(cleared_list)
     fd.plot(20, cumulative=True)
     print("hello")
+
+def return_specified_pos(pos_part, text):
+    pos_tags = nltk.pos_tag(text)
+    pos_list = []
+    for word, pos in pos_tags:
+        if pos.startswith(pos_part):
+            pos_list.append(word)
+    return pos_list
 
 
 # method that returns a dictionary representing the 20 most often used words
