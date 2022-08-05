@@ -13,10 +13,10 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 from spellchecker import SpellChecker
 from nltk import WhitespaceTokenizer
 
-def preprocessing():
+def preprocessing(path):
 
     #open text file you want to analyze
-    f = open('teslafinance.txt', 'r', encoding='utf8')
+    f = open(path, 'r', encoding='utf8')
     raw = f.read()
 
     #tokenize by words and make into nltk text

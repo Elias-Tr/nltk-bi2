@@ -85,9 +85,12 @@ def condition_prediction(cleared_txt):
 # somewhat deprecated
 # plots a frequency distribution within nltk
 def frequency_dist(cleared_list):
-    fd = FreqDist(cleared_list)
+    verbs = return_specified_pos('VB', cleared_list)
+
+    #fd = FreqDist(cleared_list)
+    fd = FreqDist(verbs)
+
     fd.plot(20, cumulative=True)
-    print("hello")
 
 def return_specified_pos(pos_part, text):
     pos_tags = nltk.pos_tag(text)

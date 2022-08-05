@@ -10,6 +10,7 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 import preprocessing as pre
 import nltk_methods as nm
 
+
 # necessary nltk downloads - or use nltk.download() to download everything
 
 # nltk.download('wordnet')
@@ -20,8 +21,8 @@ import nltk_methods as nm
 # nltk.download("words")
 
 
-def all_analysis():
-    text = pre.preprocessing()
+def all_reddit_analysis():
+    text = pre.preprocessing('teslafinance.txt')
     cleared = pre.get_cleared_text(text)
 
     nm.dispersion_plot_vanilla(text)
@@ -29,6 +30,16 @@ def all_analysis():
     nm.collocations(cleared)
     nm.sentiment_analysis()
 
-if __name__ == '__main__':
-    all_analysis()
 
+def all_news_analysis():
+    text = pre.preprocessing('tesla_news.txt')
+    cleared = pre.get_cleared_text(text)
+
+    nm.dispersion_plot_vanilla(text)
+    nm.frequency_dist(cleared)
+    nm.collocations(cleared)
+    nm.sentiment_analysis()
+
+
+if __name__ == '__main__':
+    all_news_analysis()
