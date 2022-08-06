@@ -1,7 +1,7 @@
 import nltk
 from matplotlib import pyplot as plt
 from nltk.corpus import stopwords
-from nltk import FreqDist, WordNetLemmatizer, ConditionalFreqDist
+from nltk import FreqDist, WordNetLemmatizer, ConditionalFreqDist, BigramCollocationFinder, TrigramCollocationFinder
 from nltk.draw import dispersion_plot
 from nltk.sentiment import SentimentIntensityAnalyzer
 
@@ -85,7 +85,7 @@ def condition_prediction(cleared_txt):
 # somewhat deprecated
 # plots a frequency distribution within nltk
 def frequency_dist(cleared_list):
-    verbs = return_specified_pos('VB', cleared_list)
+    verbs = return_specified_pos('NN', cleared_list)
 
     #fd = FreqDist(cleared_list)
     fd = FreqDist(verbs)
@@ -123,7 +123,28 @@ def collocations(cleared_list):
     lemmatizer = WordNetLemmatizer()
     lemmatized_words = [lemmatizer.lemmatize(word) for word in cleared_list]
     new_text = nltk.Text(lemmatized_words)
+
     new_text.collocations()
+
+def trigram_collocations(cleared_list):
+    lemmatizer = WordNetLemmatizer()
+    lemmatized_words = [lemmatizer.lemmatize(word) for word in cleared_list]
+    new_text = nltk.Text(lemmatized_words)
+    trigram_measures = nltk.collocations.TrigramAssocMeasures()
+    privacy_filter = lambda *w: 'tesla' not in w
+
+    finder = TrigramCollocationFinder.from_words(
+        new_text)
+    # only trigrams that appear 3+ times
+    finder.apply_freq_filter(20)
+    # only trigrams that contain 'creature'
+    finder.apply_ngram_filter(privacy_filter)
+    # return the 10 n-grams with the highest PMI
+    # print (finder.nbest(trigram_measures.likelihood_ratio, 10))
+    for i in finder.score_ngrams(trigram_measures.likelihood_ratio):
+        print(i)
+
+
 
 
 # calculates overall sentiment and prints the positive, negative and neutral score

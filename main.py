@@ -28,6 +28,7 @@ def all_reddit_analysis():
     nm.dispersion_plot_vanilla(text)
     nm.frequency_dist(cleared)
     nm.collocations(cleared)
+    #nm.trigram_collocations(cleared)
     nm.sentiment_analysis()
 
 
@@ -38,8 +39,9 @@ def all_news_analysis():
     nm.dispersion_plot_vanilla(text)
     nm.frequency_dist(cleared)
     nm.collocations(cleared)
+    #nm.trigram_collocations(cleared)
     nm.sentiment_analysis()
 
 
 if __name__ == '__main__':
-    all_news_analysis()
+    all_reddit_analysis()
