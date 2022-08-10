@@ -148,8 +148,8 @@ def trigram_collocations(cleared_list):
 
 
 # calculates overall sentiment and prints the positive, negative and neutral score
-def sentiment_analysis():
-    f = open('teslafinance.txt', 'r', encoding='utf8')
+def sentiment_analysis(path):
+    f = open(path, 'r', encoding='utf8')
     raw = f.read()
 
     # tokenize by sentences and make into nltk text
