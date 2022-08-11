@@ -154,7 +154,7 @@ def sentiment_analysis(path):
 
     # tokenize by sentences and make into nltk text
 
-    tokens = nltk.sent_tokenize(raw)
+    tokens = nltk.word_tokenize(raw)
     text2 = nltk.Text(tokens)
 
     sia = SentimentIntensityAnalyzer()

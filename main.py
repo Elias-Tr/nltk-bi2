@@ -22,11 +22,11 @@ import nltk_methods as nm
 
 
 def all_reddit_analysis():
-    # text = pre.preprocessing('tesla_allfinance_50k.txt')
-    # cleared = pre.get_cleared_text(text)
+    #text = pre.preprocessing('tesla_allfinance_50k.txt')
+    #cleared = pre.get_cleared_text(text)
     # nm.dispersion_plot_vanilla(text)
     # nm.frequency_dist(cleared)
-    # nm.collocations(cleared)
+    #nm.collocations(cleared)
     # nm.trigram_collocations(cleared)
     nm.sentiment_analysis('tesla_allfinance_50k.txt')
 
