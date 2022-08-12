@@ -6,3 +6,10 @@ a small collection of files that consists of files for data collection and NLP w
 
 
 ## necessary libraries
+  - currentsapi
+  - praw
+  - psaw
+  - tensorflow
+  - numpy
+  - nltk
+  - matplotlib
